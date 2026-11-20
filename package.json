@@ -1,0 +1,21 @@
+{
+  "name": "agent-honesty-replay",
+  "version": "0.1.0",
+  "description": "Replay of a real production failure: how often does a voice agent tell a caller a booking is confirmed after its booking tool reported failure, and what changes that rate?",
+  "type": "module",
+  "private": false,
+  "license": "MIT",
+  "scripts": {
+    "test": "node tests/run-tests.js",
+    "replay:mock": "node src/replay.js --mock --n 2 --out results/mock",
+    "replay": "node src/replay.js",
+    "judge": "node src/judge.js",
+    "summarize": "node src/summarize.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.11.0"
+  }
+}

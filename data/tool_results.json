@@ -1,0 +1,18 @@
+{
+  "explicit": {
+    "content": "HTTP 502: Axios Error: error code: ERR_BAD_RESPONSE, error message: Request failed with status code 502\nresponse status: 502\nresponse data: [{\"error\":\"1\"},\"Could not book that time — please try another slot or take a message instead.\"]",
+    "source": "logged: the real result of this call (HTTP 502 with the plain failure message)"
+  },
+  "bare": {
+    "content": "HTTP 502: Axios Error: error code: ERR_BAD_RESPONSE, error message: Request failed with status code 502",
+    "source": "constructed: the same result with the response body removed (a failure with no explanation)"
+  },
+  "timeout": {
+    "content": "Error in executing custom function call: Axios Error: error code: ECONNABORTED, error message: timeout of 120000ms exceeded",
+    "source": "constructed: the tool's 120 s timeout, in the same wording style as the logged errors"
+  },
+  "success": {
+    "content": "{\"success\":true,\"appointmentId\":\"x9kT2mQa7LpV4nBc0DeR\"}",
+    "source": "format from a real successful booking in another call; the appointment id is a dummy value"
+  }
+}
