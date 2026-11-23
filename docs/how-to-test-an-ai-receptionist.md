@@ -108,7 +108,7 @@ It says “booked” and the calendar is empty; it cannot say how it knows; it p
 - How do I see every booking the AI made, so I can check it myself?
 - What happens to my customers’ information?
 
-After September 8, I changed the final say. **In our system, the booking tool now checks the details on our server and returns a plain sentence saying what actually happened, and the AI is only allowed to repeat that sentence.** Thirty automated checks cover it. Correcting the instructions was the first step; this change, so that the AI is no longer the one deciding what is true, is the lasting one. That is the design I would ask any provider to explain.
+After September 8, I changed the final say. **In our system, the booking tool now checks the details on our server and returns a plain sentence saying what actually happened, and the AI is only allowed to repeat that sentence.** Thirty automated checks cover it. Correcting the instructions was the first step. The second was moving the facts into the system: the booking system, not the AI, decides whether the calendar accepted the booking and what may be said about confirmations. The AI is still instructed to repeat only that, and testing how well it follows that instruction is my next experiment. That is the design I would ask any provider to explain.
 
 ## 6. What this experiment does not show
 
