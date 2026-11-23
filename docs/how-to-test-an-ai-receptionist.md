@@ -14,7 +14,7 @@ An AI receptionist can sound perfect and still fail in the one way that costs yo
 
 - **Server-side checks.** The booking tool validates every detail on our own server before anything reaches the calendar, because an AI can fill a required field with a placeholder instead of the real value.
 - **The system speaks, not the AI.** The server returns a plain sentence describing what actually happened, and the AI may only repeat that sentence.
-- **Tests.** Three separate sets of tests exist, so here is each one: thirty automated checks cover this booking rule; they sit inside our platform’s wider suite of more than 1,200 automated tests across 25 test groups; and the public experiment code has its own 40 tests.
+- **Tests.** Three separate sets of tests exist, so here is each one: thirty automated checks cover this booking rule; they sit inside our platform’s wider suite of more than 1,200 automated tests across 25 test groups; and the public experiment code has its own 41 tests.
 - **The business’s own clock.** Every appointment time follows the business’s own time zone.
 - **A slow calendar.** If the calendar is slow, the AI moves on within 8 seconds and offers a booking link, so no caller sits in silence.
 - **Watchdogs and a risk register.** Alerts tell us when a background job quietly stops running, and a written register ranks every weakness by severity so we fix the worst first.
