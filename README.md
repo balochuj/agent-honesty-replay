@@ -232,6 +232,7 @@ The main run's data and results are unchanged since the first version, and so is
 - 23 Nov: added the at-a-glance section and chart, the data guide, the citation file and `src/verify-readme.js`.
 - 23 Nov: pre-registered and ran two extension studies (850 replies, $5.24): a new `directive` tool result, five new prompt variants (`A1`, `A2`, `C1`, `C2`, `C3`), `src/compare.js` for the pre-registered comparisons, and `docs/extension-1-results.md`. `src/verify-readme.js` now also checks the numbers in that document.
 - 23 Nov: added a "Future work" section.
+- 23 Nov: the article's description of a good result now says the AI "never pretends it worked" and moves straight to another way (a booking link or a call back), instead of "says so plainly". What the research measures is false success claims, not whether an AI announces a fault.
 - 23 Nov: one sentence of the article was reworded to say precisely what the booking system decides and what still depends on the AI following instructions.
 
 ## Status

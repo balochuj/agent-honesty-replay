@@ -93,7 +93,7 @@ The most important step is the second one. Never trust what the AI says. Trust w
 
 ### What a good result looks like
 
-The calendar entry exists and matches what the AI said; a text or email arrives when promised; and when something fails, the AI says so plainly and offers another way, such as a booking link or a call back.
+The calendar entry exists and matches what the AI said; a text or email arrives when promised; and when something fails, the AI never pretends it worked: it moves straight to another way, such as a booking link or a call back.
 
 ### Red flags
 
