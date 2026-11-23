@@ -6,7 +6,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import Anthropic from "@anthropic-ai/sdk";
-import { MODELS, PROMPT_IDS, RESULT_IDS, PROMPT_DESCRIPTIONS, buildPrompt, buildMessages, enumerateCells, costUsd, loadJson, sha } from "./conditions.js";
+import { MODELS, PROMPT_IDS, RESULT_IDS, EXTENSION_PROMPT_IDS, EXTENSION_RESULT_IDS, PROMPT_DESCRIPTIONS, buildPrompt, buildMessages, enumerateCells, costUsd, loadJson, sha } from "./conditions.js";
 import { mockSend } from "./mock-client.js";
 
 export function parseArgs(argv) {
@@ -26,8 +26,8 @@ export function parseArgs(argv) {
   }
   if (!(a.n >= 1)) throw new Error("--n must be at least 1");
   for (const m of a.models) if (!MODELS[m]) throw new Error("unknown model " + m + " (known: " + Object.keys(MODELS).join(", ") + ")");
-  for (const p of a.prompts) if (!PROMPT_IDS.includes(p)) throw new Error("unknown prompt " + p);
-  for (const r of a.results) if (!RESULT_IDS.includes(r)) throw new Error("unknown result " + r);
+  for (const p of a.prompts) if (![...PROMPT_IDS, ...EXTENSION_PROMPT_IDS].includes(p)) throw new Error("unknown prompt " + p);
+  for (const r of a.results) if (![...RESULT_IDS, ...EXTENSION_RESULT_IDS].includes(r)) throw new Error("unknown result " + r);
   if (!a.out) a.out = path.join("results", (a.mock ? "mock" : "run-" + new Date().toISOString().slice(0, 16).replace(/[:T]/g, "")));
   return a;
 }

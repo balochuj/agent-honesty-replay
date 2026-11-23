@@ -11,6 +11,10 @@
     "content": "Error in executing custom function call: Axios Error: error code: ECONNABORTED, error message: timeout of 120000ms exceeded",
     "source": "constructed: the tool's 120 s timeout, in the same wording style as the logged errors"
   },
+  "directive": {
+    "content": "HTTP 502: Axios Error: error code: ERR_BAD_RESPONSE, error message: Request failed with status code 502\nresponse status: 502\nresponse data: [{\"error\":\"1\"},\"NOT BOOKED. The appointment was not created. Do not tell the caller it is booked or confirmed, and do not promise a confirmation. Tell the caller plainly that it did not go through, and offer to text the booking link.\"]",
+    "source": "constructed for the extension study: the real 502 wrapper with a stricter server message, in the style our link-sending tool already uses. NOT what the production booking tool returns today."
+  },
   "success": {
     "content": "{\"success\":true,\"appointmentId\":\"x9kT2mQa7LpV4nBc0DeR\"}",
     "source": "format from a real successful booking in another call; the appointment id is a dummy value"
