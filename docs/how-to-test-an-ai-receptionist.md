@@ -108,7 +108,7 @@ It says “booked” and the calendar is empty; it cannot say how it knows; it p
 - How do I see every booking the AI made, so I can check it myself?
 - What happens to my customers’ information?
 
-After September 8, I changed the final say. **In our system, the booking tool now checks the details on our server and returns a plain sentence saying what actually happened, and the AI is only allowed to repeat that sentence.** Thirty automated checks cover it. Correcting the instructions was the first step. The second was moving the facts into the system: the booking system, not the AI, decides whether the calendar accepted the booking and what may be said about confirmations. The AI is still instructed to repeat only that, and testing how well it follows that instruction is my next experiment. That is the design I would ask any provider to explain.
+After September 8, I changed the final say. **In our system, the booking tool now checks the details on our server and returns a plain sentence saying what actually happened, and the AI is only allowed to repeat that sentence.** Thirty automated checks cover it. Correcting the instructions was the first step. The second was moving the facts into the system: the booking system, not the AI, decides whether the calendar accepted the booking and what may be said about confirmations. The AI is still instructed to repeat only that, so I tested a stricter message from the system. In a follow-up run, with a message saying “NOT BOOKED”, none of 25 replies claimed a booking, even under my original hiding instructions; with the older message, all 25 did (details in the open repository). Our booking tool does not send that stricter message yet. That is the design I would ask any provider to explain.
 
 ## 6. What this experiment does not show
 
@@ -130,7 +130,7 @@ For readers who want to know how far to trust this:
 - **I measured the measurer.** An AI labeled all 800 replies. I labeled 30 at random without seeing its labels, and we agreed on all 30 on the main question. We differed on 4 of 30 on a side question, whether the reply offered a next step, because “let me try again” is hard to classify. I built no claim on that side question.
 - **I fixed my own errors instead of dropping data.** The AI labeler failed to read 3 replies at first. I raised its limit and ran them again. While reading replies I noticed that “you’re booked” and “you’ll hear from us” are different kinds of claim, and I counted them separately.
 - **Small samples get honest numbers.** With 25 tries per case, 25 of 25 means the true rate is very likely above 87%, not exactly 100%. The published tables show these ranges.
-- **Anyone can repeat it.** The code, the data (with phone numbers removed) and the experiment’s own 40 automated tests are public [1]. These 40 are separate from the platform tests described near the top.
+- **Anyone can repeat it.** The code, the data (with phone numbers removed) and the experiment’s own 41 automated tests are public [1]. These 41 are separate from the platform tests described near the top.
 
 **What I would study next:** repeat this on more live voice calls; try more AI models and more kinds of failure; test whether a caller who says “just confirm it” changes the answer; and test whether a second AI watching the first can catch false confirmations. The question underneath is bigger than receptionists: when an AI that acts on our behalf says “done,” how do we know it is true?
 

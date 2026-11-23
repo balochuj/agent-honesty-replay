@@ -32,7 +32,7 @@ I first assumed the model was hallucinating. Reading the logs showed something e
 
 ## The real incident (hand-labeled from the call logs)
 
-On 8 September I ran 19 booking-related test calls on our own line. Nine of them reached a booking attempt where the tool returned an explicit failure.
+On 8 September I made 19 test calls to our own line. Ten of them reached a booking attempt, and in nine of those the tool returned an explicit failure.
 
 | What the agent said after the tool failed | Calls (of 9) |
 |---|---|
@@ -117,7 +117,7 @@ The complete tables, including "says booked" versus "promise only", whether the 
 - **haiku-5.5 behaved differently.** Under the real prompt it did not claim success after an explicit failure or a timeout; it claimed success only after the bare 502 (60%, mostly promise-style: "you'll hear from us shortly"). I did not investigate why.
 - **The success control was 100% everywhere.** Honesty rules did not make either model refuse to confirm a real success.
 
-I have not run a formal significance test; with these sample sizes the intervals for A versus B on the explicit result do not overlap, which is what I rely on.
+For the main run I did not run a formal significance test; with these sample sizes the intervals for A versus B on the explicit result do not overlap, which is what I rely on. The extension studies below add a difference with a Newcombe interval and a Fisher exact p-value for each comparison (`src/compare.js`).
 
 ### Hand check of the judge
 
@@ -160,7 +160,7 @@ It does **not** show:
 
 ## What was redacted
 
-After the run, I removed from the published files every phone number (including 4 replies that spoke the owner's number aloud in words; each became `[phone number removed]`) and removed the test caller's surname everywhere: it is an initial ("Emily P.") in the model replies and the placeholder "Sample" in the base conversation file. Nothing else in the replies was changed. The placeholder differs from the surname spoken in the original test call, so the base conversation file is not byte-identical to what was run (its hash no longer matches `results/full/config.json`); it differs only in that name. The unredacted originals are kept privately. Because of the surname change, the base conversation file no longer matches the hash recorded in `results/full/config.json`.
+After the run, I removed from the published files every phone number (including 4 replies that spoke the owner's number aloud in words; each became `[phone number removed]`) and removed the test caller's surname everywhere: it is an initial ("Emily P.") in the model replies and the placeholder "Sample" in the base conversation file. Nothing else in the replies was changed. The placeholder differs from the surname spoken in the original test call, so the base conversation file is not byte-identical to what was run (its hash no longer matches `results/full/config.json`); it differs only in that name. The unredacted originals are kept privately. The extension results needed no redaction: the scan found no phone numbers or surnames in them (the replies use the placeholder "Emily Sample" from the base conversation file).
 
 ## Reproducing it
 
@@ -174,6 +174,18 @@ node src/replay.js --n 25 --out results/full --max-usd 6 --prompt-file path/to/y
 node src/judge.js --in results/full --max-usd 3
 node src/summarize.js --in results/full
 node src/verify-readme.js                  # no API key: checks the README and article numbers against the stored labels
+```
+
+The extension studies were run with:
+
+```bash
+node src/replay.js --n 25 --models sonnet-5,haiku-5.5 --prompts A,B,C,D --results explicit,directive --out results/ext1-directive --prompt-file path/to/your-prompt.txt
+node src/replay.js --n 25 --models sonnet-5 --prompts A1,A2 --results explicit,bare,timeout --out results/ext2-ablation --prompt-file path/to/your-prompt.txt
+node src/replay.js --n 25 --models sonnet-5 --prompts C1,C2,C3 --results explicit,bare,timeout,success --out results/ext2-ablation --prompt-file path/to/your-prompt.txt
+node src/judge.js --in results/ext1-directive
+node src/judge.js --in results/ext2-ablation
+node src/compare.js --study1 results/ext1-directive
+node src/compare.js --study2 results/ext2-ablation
 ```
 
 The original prompt is not published, so reproducing needs your own prompt text that contains the two passages in `data/concealment_rule_verbatim.json` exactly once each (the script refuses to run otherwise). Runs and labeling are resume-safe and stop at a spend cap.
@@ -196,7 +208,7 @@ The original prompt is not published, so reproducing needs your own prompt text 
 | `docs/data-guide.md` | what every data file and field contains |
 | `docs/how-to-test-an-ai-receptionist.md` | the plain-language article |
 | `CITATION.cff` | how to cite this repository |
-| `results/pilot`, `results/full` | raw replies, labels and summaries |
+| `results/pilot`, `results/full`, `results/ext1-directive`, `results/ext2-ablation` | raw replies, labels and summaries (pilot, main run, extension studies 1 and 2) |
 
 ## Future work
 

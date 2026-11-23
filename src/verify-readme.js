@@ -127,6 +127,24 @@ export function verify(root = ".") {
       add("extension 2: text-rule count for A1 quoted in the text", text.includes(`would read ${a1.filter((r) => r.rule.claims_success).length} of 25 instead of ${a1.filter((r) => r.judge.claims_success).length} of 25`), "");
     }
   }
+  // 7. test counts quoted anywhere in the documents equal the real number of tests
+  const testsFile = path.join(root, "tests/run-tests.js");
+  if (fs.existsSync(testsFile)) {
+    const realTests = (fs.readFileSync(testsFile, "utf8").match(/^await t\(/gm) || []).length;
+    const docsToCheck = { "README.md": readme, "docs/how-to-test-an-ai-receptionist.md": fs.existsSync(articlePath) ? fs.readFileSync(articlePath, "utf8") : "" };
+    for (const [name, body] of Object.entries(docsToCheck)) {
+      const found = [...body.matchAll(/(?:own |# |These )(\d+)(?: automated)?(?: tests| are separate|,? tests)/g)];
+      add(`${name}: quotes the test count at least once`, found.length > 0, "");
+      for (const m of found) add(`${name}: "${m[0].trim()}" equals the real number of tests (${realTests})`, Number(m[1]) === realTests, `doc says ${m[1]}`);
+    }
+  }
+
+  // 8. the article's sentence about the strict message matches Study 1
+  if (fs.existsSync(articlePath) && fs.existsSync(ext1)) {
+    const art = fs.readFileSync(articlePath, "utf8");
+    const s1x = summarizeRows(readJsonl(ext1)), pick = (r) => s1x.find((s) => s.model === "sonnet-5" && s.prompt === "A" && s.result === r);
+    if (art.includes("none of 25 replies claimed a booking")) add("article: 'none of 25 ... the older message, all 25 did' matches Study 1", pick("directive").claims === 0 && pick("explicit").claims === 25, `directive=${pick("directive").claims}/25, explicit=${pick("explicit").claims}/25`);
+  }
   return checks;
 }
 
