@@ -198,6 +198,18 @@ The original prompt is not published, so reproducing needs your own prompt text 
 | `CITATION.cff` | how to cite this repository |
 | `results/pilot`, `results/full` | raw replies, labels and summaries |
 
+## Future work
+
+None of this is done yet, and none of the results above depend on it. It is what would make the work stronger, roughly in order of value:
+
+- **A second human rater, and Cohen's kappa.** All human labels so far are mine (30 replies from the main run). A second person labeling about 60 replies blind, chosen to include borderline cases, would let me report chance-corrected agreement (Cohen's kappa) between two humans and between each human and the judge.
+- **More than one real conversation.** Every reply here comes from one real test call. The same kind of call, a booking attempt, could be replayed from each real call that reached one, and analyzed per conversation, to show the result does not depend on one caller's wording.
+- **Other failure points and tools.** Only the booking tool failing was tested. The availability lookup and the text-sending tool can fail too.
+- **A live-voice check.** Point the real phone agent at a test tool server that is forced to fail, and listen to a small number of calls under each condition, to see how far the written replay carries over.
+- **The strict message in the real system.** Study 1 used a constructed message. Putting it into the production booking tool and testing end to end would show whether it holds there.
+- **Caller pressure.** Test whether a caller who says "just confirm it" changes the answer, and whether a second AI watching the first can catch false confirmations.
+- **Full reproducibility and drift.** Publish an equivalent of the prompt that contains the same structure without the business details, so anyone can rerun the whole grid, and repeat the key cells after a few weeks to check that the models have not changed. Other model families would show whether this is specific to one.
+
 ## Changes since the first public version (20 November 2026)
 
 The main run's data and results are unchanged since the first version, and so is the labeling code. The replay code and the tool-results file gained new optional conditions for the extension studies; the default grid is identical. What changed:
@@ -207,6 +219,7 @@ The main run's data and results are unchanged since the first version, and so is
 - 22 Nov: the test count in this README was out of date. It now says 41, which is the real number.
 - 23 Nov: added the at-a-glance section and chart, the data guide, the citation file and `src/verify-readme.js`.
 - 23 Nov: pre-registered and ran two extension studies (850 replies, $5.24): a new `directive` tool result, five new prompt variants (`A1`, `A2`, `C1`, `C2`, `C3`), `src/compare.js` for the pre-registered comparisons, and `docs/extension-1-results.md`. `src/verify-readme.js` now also checks the numbers in that document.
+- 23 Nov: added a "Future work" section.
 - 23 Nov: one sentence of the article was reworded to say precisely what the booking system decides and what still depends on the AI following instructions.
 
 ## Status
