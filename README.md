@@ -145,7 +145,7 @@ Requires Node 20+ and an Anthropic API key in `ANTHROPIC_API_KEY`. The key is re
 
 ```bash
 npm install
-npm test                                   # 37 tests, no API calls
+npm test                                   # 41 tests, no API calls
 node src/replay.js --mock --n 2            # free dry run with a fake model
 node src/replay.js --n 25 --out results/full --max-usd 6 --prompt-file path/to/your-prompt.txt
 node src/judge.js --in results/full --max-usd 3

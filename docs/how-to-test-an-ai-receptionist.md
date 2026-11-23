@@ -35,7 +35,7 @@ The conversations sounded flawless. The calendar was empty. No customers were in
 
 ## 2. Why it happened: my own instructions
 
-My first guess was that the AI was making things up. The truth was less comfortable. When I read the instructions I had written for it, two passages told it never to announce a failure and to say only “you’ll hear from us shortly.” The AI had followed my instruction. In a real booking failure, that rule led it to say something untrue.
+My first guess was that the AI was making things up. The truth was less comfortable. When I read the instructions I had written for it, two passages told it never to announce a failure and to say only “you’ll hear from us shortly.” The AI had followed my instruction. In a real booking failure, that rule led it to say something untrue. Fixing that wording was only the first step.
 
 That raised a question I could test: **how much of the false “you’re booked” comes from the instructions, and how much would the AI do anyway?**
 
@@ -69,6 +69,7 @@ What I take from this:
 - **The instructions mattered most.** The same AI that said “you’re booked” every time under my original instructions reported the failure every time, on the clear failure message, once the hiding lines were gone.
 - **The unclear cases are the dangerous ones.** With a blank error or no answer, the AI still claimed a booking in many replies even without my instructions. A calendar that is slow or silent is exactly when an AI is most tempted to say yes.
 - **A clear honesty rule brought every case in this test to zero.**
+- **Fixing the wording was not enough on its own.** Even without my hiding lines, the AI still claimed a booking in many unclear cases, and the short neutral prompt still let 8 of 25 through after a silent calendar. Wording is the AI’s choice every time. That is why we also moved the final say into the system (see “Where we are now” and section 5): the server decides what is true, and the AI may only repeat it.
 - **The second, smaller model behaved differently.** It claimed a booking mostly after the blank error, so one result should never be treated as the whole story.
 
 This fits what other researchers have reported. One study of AI coding agents found that their reports were misleading in 80% of the cases where they had not finished the job [2]. Another found that AI models often leave problems out of their own reports unless they are asked to be honest [3]. And Anthropic’s shop experiment described an AI that behaved like “a friend who just wants to be nice” [4]. The AI wants to be helpful, and “yes, you’re booked” feels helpful.
@@ -107,7 +108,7 @@ It says “booked” and the calendar is empty; it cannot say how it knows; it p
 - How do I see every booking the AI made, so I can check it myself?
 - What happens to my customers’ information?
 
-After September 8, I changed the final say. **In our system, the booking tool now checks the details on our server and returns a plain sentence saying what actually happened, and the AI is only allowed to repeat that sentence.** Thirty automated checks cover it. That is the design I would ask any provider to explain.
+After September 8, I changed the final say. **In our system, the booking tool now checks the details on our server and returns a plain sentence saying what actually happened, and the AI is only allowed to repeat that sentence.** Thirty automated checks cover it. Correcting the instructions was the first step; this change, so that the AI is no longer the one deciding what is true, is the lasting one. That is the design I would ask any provider to explain.
 
 ## 6. What this experiment does not show
 
@@ -152,7 +153,7 @@ Call it at an odd hour, book a real appointment, then check your calendar and co
 
 ### Can an AI receptionist be wrong about a booking?
 
-Yes. In our own tests it told callers they were booked when the booking had failed, because our instructions told it not to announce failures. A clear honesty rule fixed it in every case we tested.
+Yes. In our own tests it told callers they were booked when the booking had failed, because our instructions told it not to announce failures. A clear honesty rule fixed it in every case we tested, and we went further: our booking system now decides what is true, and the AI may only repeat what the system returns.
 
 ### What should I ask a provider about failures?
 
