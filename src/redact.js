@@ -47,9 +47,9 @@ export function scanText(text) {
 // what gets published (relative to the repo root); the originals of these are backed up before redaction
 export const PUBLISH = [
   "LICENSE",
-  "README.md", "docs/how-to-test-an-ai-receptionist.md", "package.json", ".env.example", ".gitignore",
+  "README.md", "docs/how-to-test-an-ai-receptionist.md", "docs/data-guide.md", "CITATION.cff", "package.json", ".env.example", ".gitignore",
   ...["data/base_conversation.json", "data/concealment_rule_verbatim.json", "data/tool_results.json", "data/tools.json"],
-  ...["src/agreement.js", "src/conditions.js", "src/judge.js", "src/mock-client.js", "src/probe.js", "src/redact.js", "src/replay.js", "src/summarize.js", "src/build-data.js", "tests/run-tests.js"],
+  ...["src/agreement.js", "src/conditions.js", "src/judge.js", "src/mock-client.js", "src/probe.js", "src/redact.js", "src/replay.js", "src/summarize.js", "src/build-data.js", "src/verify-readme.js", "tests/run-tests.js"],
   ...["results/full/config.json", "results/full/raw.jsonl", "results/full/judged.jsonl", "results/full/summary.csv", "results/full/summary.md", "results/full/handcheck_human.csv", "results/full/handcheck_key.json"],
   ...["results/pilot/config.json", "results/pilot/raw.jsonl", "results/pilot/judged.jsonl", "results/pilot/summary.csv", "results/pilot/summary.md"],
 ];

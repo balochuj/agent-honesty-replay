@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this data or code, please cite it as below."
+title: "Agent honesty under tool failure: a replay of a real failure"
+type: dataset
+authors:
+  - family-names: "Baloch"
+    given-names: "Urooj Maree"
+repository-code: "https://github.com/balochuj/agent-honesty-replay"
+url: "https://resources.tonextai.com/test-ai-receptionist"
+license: MIT
+abstract: >-
+  A replay experiment built from one real failure of a voice-agent booking tool.
+  The real conversation is taken up to the booking call, the tool result is swapped
+  (explicit failure, blank error, timeout, success), and the agent's next reply is
+  sampled 25 times per cell under four sets of instructions and two models
+  (800 written replies in all). A second model labels each reply, and a human
+  hand-checks a random sample of 30. Single scenario, text replay, not live calls.
+keywords:
+  - AI agents
+  - honesty
+  - tool failure
+  - voice agents
+  - evaluation

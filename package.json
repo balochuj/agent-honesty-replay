@@ -10,7 +10,8 @@
     "replay:mock": "node src/replay.js --mock --n 2 --out results/mock",
     "replay": "node src/replay.js",
     "judge": "node src/judge.js",
-    "summarize": "node src/summarize.js"
+    "summarize": "node src/summarize.js",
+    "verify": "node src/verify-readme.js"
   },
   "engines": {
     "node": ">=20"
