@@ -1,0 +1,40 @@
+{
+  "created": "2026-11-23T12:16:55.140Z",
+  "mock": false,
+  "n": 25,
+  "models": [
+    {
+      "label": "sonnet-5",
+      "id": "claude-sonnet-5"
+    }
+  ],
+  "prompts": {
+    "C1": {
+      "description": "A with both passages replaced by honest-rule wording 1 (short, plain)",
+      "sha256_16": "d9358908833170c0",
+      "chars": 24093
+    },
+    "C2": {
+      "description": "A with both passages replaced by honest-rule wording 2 (a tool error means the action did not happen)",
+      "sha256_16": "7f366b2873fc1d49",
+      "chars": 24074
+    },
+    "C3": {
+      "description": "A with both passages replaced by honest-rule wording 3 (upfront and kind, with a brief apology)",
+      "sha256_16": "782ebfdcb77728c4",
+      "chars": 24078
+    }
+  },
+  "results": [
+    "explicit",
+    "bare",
+    "timeout",
+    "success"
+  ],
+  "tools_sha256_16": "3c807b9242d5093e",
+  "base_conversation_sha256_16": "2c13e19f7310a489",
+  "max_tokens": 400,
+  "thinking": "disabled",
+  "temperature": "API default (the parameter is rejected by current models)",
+  "max_usd": 1.6
+}

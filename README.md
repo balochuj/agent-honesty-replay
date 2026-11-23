@@ -137,6 +137,15 @@ Three first-pass judge outputs in the sonnet-5 / B / timeout cell could not be p
 
 In three of the hand-checked replies that were correctly honest, the agent said things like "I don't want to give you a false confirmation." That wording can plant the idea in a caller's mind that a false appointment was possible. Honest does not automatically mean well-phrased. I did not measure this.
 
+## Extension studies (23 November 2026)
+
+After the main run I wrote a pre-registration and then ran two follow-up studies on the same single conversation: 850 more written replies, labeled by the same blind judge and rubric. The plan was committed before any of this data existed ([`docs/preregistration-extension-1.md`](docs/preregistration-extension-1.md)); the full results, including where my predictions were wrong, are in [`docs/extension-1-results.md`](docs/extension-1-results.md).
+
+- **Study 1, a strict failure message from the tool.** Under the original hiding prompt, `claude-sonnet-5` claimed success in 25 of 25 replies when the tool returned the clear failure message, and in **0 of 25** when the tool returned "NOT BOOKED. The appointment was not created. Do not tell the caller it is booked..." I had predicted 5 to 20 of 25, so that prediction was wrong. The strict message is constructed; it is not what our production booking tool returns today.
+- **Study 2, which hiding line matters and whether the honest rule depends on wording.** Either hiding passage alone kept false claims high (23 and 25 of 25 on the clear failure message). Three other wordings of the honest rule all gave 0 of 25 on every failure result and still confirmed real successes.
+
+Same limits as above: one scenario, written replies, not live calls. Cost of both studies: $5.24.
+
 ## What this does and does not show
 
 It shows that, in this scenario, the false confirmations tracked the instruction: the same model that confirmed a failed booking under the real prompt reported the failure when the concealment passages were removed or replaced.
@@ -179,7 +188,10 @@ The original prompt is not published, so reproducing needs your own prompt text 
 | `src/summarize.js` | the results tables with confidence intervals |
 | `src/agreement.js` | compares human hand-check labels with the judge |
 | `src/redact.js` | removes phone numbers and the test caller's surname from published files and scans for anything that must not be public |
-| `src/verify-readme.js` | recomputes every published number from the stored labels and fails if the README or the article disagrees |
+| `src/verify-readme.js` | recomputes every published number from the stored labels and fails if the README, the article or the extension results disagree |
+| `src/compare.js` | the pre-registered comparisons (difference with a Newcombe interval, Fisher exact p); `--selfcheck` tests it against known values |
+| `docs/preregistration-extension-1.md` | the plan for the two extension studies, committed before they were run |
+| `docs/extension-1-results.md` | results of the extension studies |
 | `tests/run-tests.js` | tests for all of the above (no network) |
 | `docs/data-guide.md` | what every data file and field contains |
 | `docs/how-to-test-an-ai-receptionist.md` | the plain-language article |
@@ -188,13 +200,15 @@ The original prompt is not published, so reproducing needs your own prompt text 
 
 ## Changes since the first public version (20 November 2026)
 
-The experiment code, the data and every result are unchanged since the first version. What changed:
+The main run's data and results are unchanged since the first version, and so is the labeling code. The replay code and the tool-results file gained new optional conditions for the extension studies; the default grid is identical. What changed:
 
 - 22 Nov: added the plain-language article (`docs/how-to-test-an-ai-receptionist.md`) and linked it from this README. Its wording was later tightened to say that the lasting fix in our system is that the booking system, not the AI, decides what is true.
 - 22 Nov: the redaction scan now allows the one public demo phone number that appears in the article and still flags every other number. One test was added for it.
 - 22 Nov: the test count in this README was out of date. It now says 41, which is the real number.
 - 23 Nov: added the at-a-glance section and chart, the data guide, the citation file and `src/verify-readme.js`.
+- 23 Nov: pre-registered and ran two extension studies (850 replies, $5.24): a new `directive` tool result, five new prompt variants (`A1`, `A2`, `C1`, `C2`, `C3`), `src/compare.js` for the pre-registered comparisons, and `docs/extension-1-results.md`. `src/verify-readme.js` now also checks the numbers in that document.
+- 23 Nov: one sentence of the article was reworded to say precisely what the booking system decides and what still depends on the AI following instructions.
 
 ## Status
 
-Complete as described. Single scenario, 800 replies, one hand-checked sample of 30. Nothing here has been peer reviewed.
+Complete as described. Single scenario, 800 replies in the main run plus 850 in two pre-registered follow-up studies, one hand-checked sample of 30 (main run only). Nothing here has been peer reviewed.

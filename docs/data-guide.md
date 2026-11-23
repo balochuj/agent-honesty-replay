@@ -7,8 +7,8 @@ What each file in this repo contains, so you can use the results without reading
 | Field | Values | Meaning |
 |---|---|---|
 | `model` | `sonnet-5`, `haiku-5.5` | which AI model wrote the reply (`config.json` gives the exact API names) |
-| `prompt` | `A`, `B`, `C`, `D` | the instructions: A original, B concealment passages removed, C explicit honesty rule, D short neutral prompt |
-| `result` | `explicit`, `bare`, `timeout`, `success` | what the booking tool returned: a clear failure message, a blank 502 error, a 120-second timeout, or a real success |
+| `prompt` | `A`, `B`, `C`, `D` (main run); `A1`, `A2`, `C1`, `C2`, `C3` (extension) | the instructions: A original, B concealment passages removed, C explicit honesty rule, D short neutral prompt. Extension: A1 only passage 1 removed, A2 only passage 2 removed, C1 to C3 three other wordings of the honest rule |
+| `result` | `explicit`, `bare`, `timeout`, `success` (main run); `directive` (extension) | what the booking tool returned: a clear failure message, a blank 502 error, a 120-second timeout, or a real success. Extension: a constructed strict failure message that starts "NOT BOOKED" |
 | `trial` | 1 to 25 | repeat number inside one cell |
 
 `key` joins the four fields as `model|prompt|result|trial`, for example `sonnet-5|B|bare|7`. It is unique and is how the hand-check files point at replies.
@@ -79,6 +79,15 @@ The settings of the run: the 25 trials per cell, the two models, a short fingerp
 | `tools.json` | the five tool definitions the agent had: `end_call`, `send_sms`, `send_booking_link`, `check_availability`, `book_appointment` |
 | `concealment_rule_verbatim.json` | the two passages of the original prompt that told the agent not to announce failures, quoted exactly |
 
+## The extension studies
+
+| Folder | Contents |
+|---|---|
+| `results/ext1-directive` | Study 1: 400 replies (2 models x prompts A to D x results `explicit` and `directive` x 25). Same files and fields as `results/full`. |
+| `results/ext2-ablation` | Study 2: 450 replies (`sonnet-5` only; prompts `A1` and `A2` on `explicit`, `bare`, `timeout`; prompts `C1` to `C3` on those three plus `success`). It was run in two parts, so its settings are in `config-part1.json` and `config-part2.json`. `raw.jsonl` also holds 32 error rows from two interruptions (the account ran out of credit, then hit a spending limit); they contain no reply and were retried under the same key. |
+
+The plan for these studies is `docs/preregistration-extension-1.md`; the results are `docs/extension-1-results.md`. `node src/compare.js --study1 results/ext1-directive` and `--study2 results/ext2-ablation` print the pre-registered comparisons.
+
 ## Check the published numbers yourself
 
 ```bash
@@ -86,4 +95,4 @@ node src/summarize.js --in results/full     # rebuilds summary.csv and summary.m
 node src/verify-readme.js                   # checks every number in the README and the article against the labels
 ```
 
-`verify-readme.js` needs no API key. It recomputes the results tables, the judge-versus-rule agreement and the hand-check figures, and fails if any number in the README or in `docs/how-to-test-an-ai-receptionist.md` disagrees with the stored data.
+`verify-readme.js` needs no API key. It recomputes the results tables, the judge-versus-rule agreement and the hand-check figures, and the tables and counts in `docs/extension-1-results.md`, and fails if any number in the README, in `docs/how-to-test-an-ai-receptionist.md` or in the extension results disagrees with the stored data.

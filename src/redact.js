@@ -51,6 +51,9 @@ export const PUBLISH = [
   ...["data/base_conversation.json", "data/concealment_rule_verbatim.json", "data/tool_results.json", "data/tools.json"],
   ...["src/agreement.js", "src/conditions.js", "src/judge.js", "src/mock-client.js", "src/probe.js", "src/redact.js", "src/replay.js", "src/summarize.js", "src/build-data.js", "src/verify-readme.js", "src/compare.js", "tests/run-tests.js"],
   ...["results/full/config.json", "results/full/raw.jsonl", "results/full/judged.jsonl", "results/full/summary.csv", "results/full/summary.md", "results/full/handcheck_human.csv", "results/full/handcheck_key.json"],
+  "docs/extension-1-results.md",
+  ...["results/ext1-directive/config.json", "results/ext1-directive/raw.jsonl", "results/ext1-directive/judged.jsonl", "results/ext1-directive/summary.csv", "results/ext1-directive/summary.md"],
+  ...["results/ext2-ablation/config-part1.json", "results/ext2-ablation/config-part2.json", "results/ext2-ablation/raw.jsonl", "results/ext2-ablation/judged.jsonl", "results/ext2-ablation/summary.csv", "results/ext2-ablation/summary.md"],
   ...["results/pilot/config.json", "results/pilot/raw.jsonl", "results/pilot/judged.jsonl", "results/pilot/summary.csv", "results/pilot/summary.md"],
 ];
 

@@ -7,6 +7,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { summarizeRows } from "./summarize.js";
 import { parseCsv, compare } from "./agreement.js";
+import { compareCells } from "./compare.js";
 
 const MODELS = { "claude-sonnet-5": "sonnet-5", "claude-haiku-5-5": "haiku-5.5" };
 const PROMPTS = ["A", "B", "C", "D"];
@@ -79,6 +80,51 @@ export function verify(root = ".") {
       const line = readme.split("\n").find((l) => l.startsWith(`| ${label}`));
       const mm = line && line.match(/(\d+) of (\d+)/);
       add(`README hand check: ${label}`, mm && Number(mm[1]) === r.agree && Number(mm[2]) === r.of, `README says ${mm ? mm[0] : "?"}; data gives ${r.agree} of ${r.of}`);
+    }
+  }
+  // 6. the extension studies' results document (only when the studies have been run)
+  const extDoc = path.join(root, "docs/extension-1-results.md");
+  const ext1 = path.join(root, "results/ext1-directive/judged.jsonl");
+  if (fs.existsSync(extDoc) && fs.existsSync(ext1)) {
+    const text = fs.readFileSync(extDoc, "utf8");
+    const s1 = summarizeRows(readJsonl(ext1));
+    const c1 = (model, p, r) => s1.find((s) => s.model === model && s.prompt === p && s.result === r);
+    add("extension 1: 400 labeled replies in 16 cells of 25", s1.length === 16 && s1.every((s) => s.n === 25), `cells=${s1.length}`);
+    for (const line of text.split("\n").filter((l) => /^\| (sonnet-5|haiku-5\.5) \|/.test(l))) {
+      const cells = line.split("|").slice(1, -1).map((c) => c.trim());
+      const e = c1(cells[0], cells[1][0], "explicit"), d = c1(cells[0], cells[1][0], "directive");
+      if (!e || !d) continue;
+      const cmp = compareCells(d.claims, d.n, e.claims, e.n);
+      const want = `${e.claims}/${e.n}`, wantD = `${d.claims}/${d.n}`;
+      const diff = `${(100 * cmp.diff).toFixed(0)} points [${(100 * cmp.lo).toFixed(0)} to ${(100 * cmp.hi).toFixed(0)}]`;
+      add(`extension 1 table: ${cells[0]} / prompt ${cells[1][0]}`, cells[2] === want && cells[3] === wantD && cells[4] === diff, `doc says ${cells[2]}, ${cells[3]}, ${cells[4]}; data gives ${want}, ${wantD}, ${diff}`);
+    }
+    const a = c1("sonnet-5", "A", "explicit"), b = c1("sonnet-5", "A", "directive"), pm = text.match(/Fisher exact p = ([0-9.e-]+)/);
+    if (a && b) { const p = compareCells(b.claims, b.n, a.claims, a.n).p; add("extension 1: the primary p-value quoted in the text", pm && pm[1] === (p < 0.0001 ? p.toExponential(1) : p.toFixed(4)), `doc says ${pm ? pm[1] : "?"}`); }
+    const dis = (rs) => rs.filter((r) => r.reply_text && r.rule.claims_success !== r.judge.claims_success).length;
+    add("extension 1: judge/rule disagreements quoted in the text", text.includes(`disagreed on ${dis(readJsonl(ext1))} of 400 replies`), `data gives ${dis(readJsonl(ext1))}`);
+
+    // study 2 (the ablation) table and the counts quoted in its text
+    const ext2 = path.join(root, "results/ext2-ablation/judged.jsonl");
+    if (fs.existsSync(ext2)) {
+      const e2rows = readJsonl(ext2), s2 = summarizeRows(e2rows);
+      const sources = { main: summary, ext: s2 };
+      const RUNS = [["A original", "main", "A"], ["A1 ", "ext", "A1"], ["A2 ", "ext", "A2"], ["B both", "main", "B"], ["C honest", "main", "C"], ["C1 ", "ext", "C1"], ["C2 ", "ext", "C2"], ["C3 ", "ext", "C3"]];
+      add("extension 2: 450 labeled replies in 18 cells of 25", s2.length === 18 && s2.every((s) => s.n === 25), `cells=${s2.length}`);
+      for (const line of text.split("\n").filter((l) => l.startsWith("| ") && !l.startsWith("| prompt") && !/^\| (sonnet-5|haiku-5\.5) \|/.test(l))) {
+        const cells = line.split("|").slice(1, -1).map((c) => c.trim());
+        const run = RUNS.find(([prefix]) => cells[0].startsWith(prefix)); if (!run || cells.length !== 5) continue;
+        ["explicit", "bare", "timeout", "success"].forEach((res, i) => {
+          const c = sources[run[1]].find((s) => (run[1] === "main" ? s.model === "sonnet-5" : true) && s.prompt === run[2] && s.result === res);
+          const want = c ? `${c.claims}/${c.n}` : "n/a";
+          add(`extension 2 table: ${cells[0]} / ${res}`, cells[i + 1] === want, `doc says ${cells[i + 1]}; data gives ${want}`);
+        });
+      }
+      add("extension 2: judge/rule disagreements quoted in the text", text.includes(`disagreed on ${dis(e2rows)} of 450 replies`), `data gives ${dis(e2rows)}`);
+      const failed = readJsonl(path.join(root, "results/ext2-ablation/raw.jsonl")).filter((r) => r.error).length;
+      add("extension 2: failed-request count quoted in the text", text.includes(`(${failed} failed requests:`), `data gives ${failed}`);
+      const a1 = e2rows.filter((r) => r.prompt === "A1" && r.result === "explicit");
+      add("extension 2: text-rule count for A1 quoted in the text", text.includes(`would read ${a1.filter((r) => r.rule.claims_success).length} of 25 instead of ${a1.filter((r) => r.judge.claims_success).length} of 25`), "");
     }
   }
   return checks;

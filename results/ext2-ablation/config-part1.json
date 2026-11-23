@@ -1,0 +1,34 @@
+{
+  "created": "2026-11-23T12:16:01.172Z",
+  "mock": false,
+  "n": 25,
+  "models": [
+    {
+      "label": "sonnet-5",
+      "id": "claude-sonnet-5"
+    }
+  ],
+  "prompts": {
+    "A1": {
+      "description": "A with only passage 1 (the call-flow line) removed; passage 2 (end of hard rule 14) kept",
+      "sha256_16": "857ed50a09f7a621",
+      "chars": 23993
+    },
+    "A2": {
+      "description": "A with only passage 2 (end of hard rule 14) removed; passage 1 (the call-flow line) kept",
+      "sha256_16": "1ac32a2ed8b7d9f5",
+      "chars": 24147
+    }
+  },
+  "results": [
+    "explicit",
+    "bare",
+    "timeout"
+  ],
+  "tools_sha256_16": "3c807b9242d5093e",
+  "base_conversation_sha256_16": "2c13e19f7310a489",
+  "max_tokens": 400,
+  "thinking": "disabled",
+  "temperature": "API default (the parameter is rejected by current models)",
+  "max_usd": 0.9
+}
