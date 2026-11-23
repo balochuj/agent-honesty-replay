@@ -119,6 +119,14 @@ await t("the scan flags a non-fictional phone number even inside a code file, an
   fs.rmSync(d, { recursive: true, force: true });
 });
 
+await t("the public demo line is allowed and kept, but any other number next to it is still caught", () => {
+  const demo = "(888) 896-" + "9990";   // assembled so the test also exercises the pattern, not a literal
+  assert.deepEqual(scanText("Call " + demo + " to test it."), []);
+  assert.equal(redactText("Call " + demo + " now").text, "Call " + demo + " now");
+  assert.ok(scanText("Call " + demo + " or 703-867-5309").length >= 1);
+  assert.equal(redactText("Call " + demo + " or 703-867-5309").text, "Call " + demo + " or [phone number removed]");
+});
+
 console.log("statistics");
 await t("Wilson intervals match known values", () => {
   const [l0, h0] = wilson(0, 3); assert.ok(l0 === 0 && Math.abs(h0 - 0.5615) < 0.002);

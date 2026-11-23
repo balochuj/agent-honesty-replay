@@ -23,22 +23,31 @@ const FORBIDDEN = [
   { name: "phone number (spoken)", re: RULES[0].re },
 ];
 
+// the one phone number that is meant to be public (the live demo line shown on the website and in the article)
+const PUBLIC_LINE = /\(?888\)?[\s.-]*896[\s.-]*9990/;
+
 export function redactText(text) {
   let out = String(text), n = 0;
-  for (const r of RULES) out = out.replace(r.re, () => { n++; return r.to; });
+  for (const r of RULES) out = out.replace(r.re, (m) => { if (r.name === "phone number" && PUBLIC_LINE.test(m)) return m; n++; return r.to; });
   return { text: out, replaced: n };
 }
 
 export function scanText(text) {
   const found = [];
-  for (const f of FORBIDDEN) { f.re.lastIndex = 0; const m = f.re.exec(String(text)); if (m) found.push({ what: f.name, sample: m[0].slice(0, 40) }); }
+  for (const f of FORBIDDEN) {
+    const g = new RegExp(f.re.source, f.re.flags.includes("g") ? f.re.flags : f.re.flags + "g");
+    for (const m of String(text).matchAll(g)) {
+      if (f.name.startsWith("phone") && PUBLIC_LINE.test(m[0])) continue;   // the public demo line is allowed; any OTHER number is still reported
+      found.push({ what: f.name, sample: m[0].slice(0, 40) }); break;
+    }
+  }
   return found;
 }
 
 // what gets published (relative to the repo root); the originals of these are backed up before redaction
 export const PUBLISH = [
   "LICENSE",
-  "README.md", "package.json", ".env.example", ".gitignore",
+  "README.md", "docs/how-to-test-an-ai-receptionist.md", "package.json", ".env.example", ".gitignore",
   ...["data/base_conversation.json", "data/concealment_rule_verbatim.json", "data/tool_results.json", "data/tools.json"],
   ...["src/agreement.js", "src/conditions.js", "src/judge.js", "src/mock-client.js", "src/probe.js", "src/redact.js", "src/replay.js", "src/summarize.js", "src/build-data.js", "tests/run-tests.js"],
   ...["results/full/config.json", "results/full/raw.jsonl", "results/full/judged.jsonl", "results/full/summary.csv", "results/full/summary.md", "results/full/handcheck_human.csv", "results/full/handcheck_key.json"],

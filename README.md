@@ -6,6 +6,8 @@ This repo replays one real failure from a production-style phone agent I built. 
 
 I built this with Claude's help (code, tests, analysis). I wrote the research question and I am responsible for the claims. The experiment is small and single-scenario; read the limitations before quoting any number.
 
+**Plain-language write-up for business owners, with a ten-minute test you can run on any AI receptionist:** [resources.tonextai.com/test-ai-receptionist](https://resources.tonextai.com/test-ai-receptionist) (copy in [`docs/how-to-test-an-ai-receptionist.md`](docs/how-to-test-an-ai-receptionist.md)).
+
 ## Why this exists
 
 My company, TonextAI, builds AI phone and text agents for small service businesses. On 8 September 2026 I ran live test calls against our own phone line. Every call and every transcript in this repo comes from those test calls; none is a customer call. In the calls where the booking tool returned an explicit error (HTTP 502), the agent usually told the caller the appointment was set.
